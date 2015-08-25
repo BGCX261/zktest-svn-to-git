@@ -1,0 +1,46 @@
+<?page id="testZul" title="indext zul" cacheable="false" 
+	language="xul/html" zscriptLanguage="Java" contentType="text/html;charset=UTF-8"?>
+<?component name="myrow" macro-uri="inline.zul" inline="true"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+	
+<!-- <window title="Test of inline macros" border="normal">
+   <zscript><![CDATA[
+   import org.zkoss.util.Pair;
+   List infos = new LinkedList();
+   for (int j = 0; j < 10; ++j) {
+      infos.add(new Pair("A" + j, "B" + j));
+   }
+   ]]></zscript>
+   <grid>
+      <rows>
+         <myrow col1="${each.x}" col2="${each.y}" forEach="${infos}"/>
+      </rows>
+   </grid>
+</window> -->
+<window apply="com.kaiser.zk.GenericForwardComposerDemo">
+<h:table border="0" align="center">
+			<h:tr>
+				<h:td>
+					<grid>
+						<rows>
+							<row>
+								用户名:
+								<textbox id="username" />
+							</row>
+							<row>
+								密码:
+								<textbox id="password" type="password" />
+							</row>
+						</rows>
+					</grid>
+					<space spacing="40px" />
+					<button id="logindemo" label="提交" width="80px"
+						onClick="" />
+				</h:td>
+			</h:tr>
+		</h:table>
+</window>
+</zk>

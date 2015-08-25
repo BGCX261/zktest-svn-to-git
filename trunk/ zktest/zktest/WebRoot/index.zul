@@ -1,0 +1,321 @@
+<?page id="testZul" title="indext zul" cacheable="false" 
+	language="xul/html" zscriptLanguage="Java" contentType="text/html;charset=UTF-8"?>
+<zk xmlns="http://www.zkoss.org/2005/zul"
+	xmlns:h="http://www.w3.org/1999/xhtml" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.zkoss.org/2005/zul/zul.xsd">
+<zscript>
+<![CDATA[
+	page.setVariable("page_var","this is page var!");
+]]>
+</zscript>	
+<window id="MyWindow1" border="normal" width="200px" apply="com.kaiser.zk.MyComposer1" use="com.kaiser.zk.MyWindow1" position="left,top">
+ Do you like ZK? <label id="label1"/>
+ 	<separator/>
+ 	<button label="yes" onClick="label1.value =self.label"/>
+ 	<button label="no" onClick="label1.value=self.label"/>
+ 	<separator/>
+ 	<textbox id="source" value="ABC"/>
+ 	<label id="label2" value="${source.value}"/>
+ 	<separator bar="true"/>
+ 	<button label="show" onClick="label2.value=source.value"/>
+ 	<zscript>
+	 	String[] contacts=new String[]{"Monday,Tuesday,Wednesday"};
+ 	</zscript>
+ 	<listbox width="200px">
+ 	<!-- <listitem label="${each}" forEach="${contacts}"/> -->
+ 	<listitem label="${each}" forEach="Monday,Tuesday,Wednesday"/>
+ 	</listbox>
+ 	<button label="ok" forward="onOk"/>
+ 	<button label="cancel" forward="onCancel"/>
+</window>
+
+<window id="MyWindow2" use="com.kaiser.zk.MyWindow2" onCreate="self.setSizable(true);self.doOverlapped();" title="MyWindow2" width="200px" border="normal">
+<!--<button label="Add Item">
+ <attribute name="onClick">
+new Label("Add at "+new Date()).setParent(MyWindow2);
+new Separator().setParent(MyWindow2);
+</attribute> 
+</button>-->
+<button label="close window" forward="onClose"/>
+<separator bar="true"/>
+<button label="add item" forward="onAddItem"/>
+<!-- <fisheyebar>
+<fisheye image="imgs/f_01_1.gif"/>
+<fisheye image="imgs/f_01_3.gif"/>
+</fisheyebar> -->
+</window>
+
+<window id="MyWindow3" title="My Window3" border="normal" width="200px" height="200px" onCreate="self.setSizable(true);self.doOverlapped()" position="center,bottom">
+	<zscript>
+		Component detached=null;
+	</zscript>
+	<button id="btn" label="Detach">
+		<attribute name="onClick">
+	if(detached!=null){
+		detached.setParent(MyWindow3);
+		detached=null;
+		btn.label="Detach";
+	}else{
+		(detached=target).setParent(null);
+		btn.label="Attach";
+	}
+	</attribute>
+	</button>
+	<separator bar="true"/>
+	<label id="target" value="You see this if it is attached."/>
+	<button label="ok" style="border:1px solid blue"/>
+	<?component name="bluebutton" extends="button" style="border:1px solid blue" label="blue ok"?>
+	<bluebutton/>
+	<bluebutton label="cancel"/>
+	<?component name="button" id="button" extends="button" style="border:1px solid red" label="rewrite button"?>
+	<button/>
+</window>
+
+<zscript>
+	new com.kaiser.zk.TestRichlet().service(this.page);
+	{ //create a new logic scope
+   		String var3 = "abc"; //visible only inside of the enclosing curly brace
+	}
+</zscript>
+
+<window id="A" title="My Window A" border="normal" width="200px" height="200px" onCreate="self.setSizable(true);self.doOverlapped()" position="right,center">
+   <zscript>
+   var1 = var2 = "abc";
+   </zscript>
+   <window id="B">
+      <zscript>
+   Object var1 = "123";
+   var2 = "def";
+   var3 = "xyz";
+      </zscript>
+   </window>
+   ${var1} ${var2} ${var3}
+   <zscript>
+  var4=page.getVariable("page_var");
+  var5=page.getZScriptVariable("var4");
+</zscript>  
+${var4}${var5}
+<zscript>
+		String var="abc";
+		//button.getParent().setVariable("var2","xyz",true);
+		//MyWindow3.setVariable("var2","xyz",true);
+		self.setVariable("var2","123",true);
+	</zscript>
+	${var} ${var2}
+</window>
+<tabbox><!-- if not specified, the default mold is assumed. -->
+   <tabs>
+      <tab label="Default"/>
+   </tabs>
+   <tabpanels>
+      <tabpanel>
+      <tabbox mold="accordion">
+         <tabs>
+            <tab label="First Accordion"/>
+            <tab label="Second Accordion"/>
+         </tabs>
+         <tabpanels>
+            <tabpanel>The first panel.</tabpanel>
+            <tabpanel>The second panel.</tabpanel>
+         </tabpanels>
+      </tabbox>
+      </tabpanel>
+   </tabpanels>
+</tabbox>
+<window use="com.kaiser.zk.MyWindow5"  position="left,bottom" border="normal" style="" width="200px" height="200px">
+<!-- <button label="alert" onClick="alert(&quot;Hello World!&quot;)"/> -->
+  <!-- <button label="alert" apply="MyComposer2"/> -->
+  <textbox id="MyTextBox" apply="com.kaiser.zk.MyComposer2" onChange="label1.value=MyTextBox.value"/>
+  <separator/>
+  <label id="label1" value=""/>
+  <separator/>
+  <textbox id="contributor" if="${1==1}" unless="${1==2}"/>
+	<zscript if="${param.contributor}">
+   		contributor.value = Executions.getCurrent().getParameter("contributor");
+	</zscript>
+	<separator/>
+	<zk switch="${page_var}">
+	<zk case="this is page var!">
+	 This is page var .
+	</zk>
+   </zk>
+   <separator/>
+   <zk choose="">
+   <zk when="${page_var == 'this is page var!'}">
+   	Evaluated if the when condition is true.
+   </zk>
+   <zk>
+   	Evaluated if none of above cases matches.
+   </zk>
+</zk>
+<zscript>
+String[] grades=new String[]{"Best","Better","God"};
+</zscript>
+<listbox>
+	<!-- <listitem label="${each}" forEach="Best,Better,God"/> -->
+	<listitem label="${each}" forEach="${grades}"/>
+</listbox>
+</window>
+
+<window id="MyWindow6" title="Test echoEvent" border="normal" width="200px" height="200px" position="right.bottom" onCreate="self.doOverlapped();self.setSizable(true)">
+<attribute name="onLater">
+Thread.sleep(2000);
+Clients.showBusy(null,false);
+new Label("Done.").setParent(MyWindow6);
+</attribute>
+<button label="echo">
+<attribute name="onClick">
+Clients.showBusy("Excute...",true);
+Events.echoEvent("onLater",MyWindow6,null);
+</attribute>
+</button>
+</window>
+<window id="Tree_Window" title="Tree Window" border="normal" width="200px" height="200px" position="center,top" onCreate="self.doOverlapped();self.setSizable(true)">
+<!-- <tree id="tree1" rows="6" width="200px">
+   <treecols>
+      <treecol label="Name"/>
+      <treecol label="Description"/>
+   </treecols>
+   <treechildren>
+      <treeitem>
+         <treerow>
+            <treecell label="Item 1"/>
+            <treecell label="Item 1 description"/>
+         </treerow>
+      </treeitem>
+      <treeitem>
+         <treerow>
+            <treecell label="Item 2"/>
+            <treecell label="Item 2 description"/>
+         </treerow>
+         <treechildren>
+            <treeitem>
+               <treerow>
+                  <treecell label="Item 2.1"/>
+               </treerow>
+               <treechildren>
+                  <treeitem>
+                   <treerow>
+                          <treecell label="Item 2.1.1"/>
+                   </treerow>
+                  </treeitem>
+                  <treeitem>
+                   <treerow>
+                          <treecell label="Item 2.1.2"/>
+                   </treerow>
+                  </treeitem>
+               </treechildren>
+            </treeitem>
+            <treeitem>
+               <treerow>
+                  <treecell label="Item 2.2"/>
+                  <treecell label="Item 2.2 is something who cares"/>
+               </treerow>
+            </treeitem>
+         </treechildren>
+      </treeitem>
+      <treeitem label="Item 3"/>
+   </treechildren>
+</tree> -->
+
+<hbox width="100%">
+	<vbox>
+		Four style of trees :
+		<radiogroup
+			onCheck='tree.setZclass("z-"+self.selectedItem.value)'>
+			<vbox>
+				<radio label="Default" value="tree" selected="true"/>
+				<radio label="Dot Tree" value="dottree" />
+				<radio label="XP Explorer" value="filetree" />
+				<radio label="Vista Explorer" value="vfiletree" />
+			</vbox>
+		</radiogroup>
+	</vbox>
+	<tree id="tree" width="400px" rows="8">
+		<treecols sizable="true">
+			<treecol label="Name" />
+			<treecol label="Description" />
+		</treecols>
+		<treechildren>
+			<treeitem>
+				<treerow>
+					<treecell label="Item 1" />
+					<treecell label="Item 1 description" />
+				</treerow>
+			</treeitem>
+			<treeitem>
+				<treerow>
+					<treecell label="Item 2" />
+					<treecell label="Item 2 description" />
+				</treerow>
+				<treechildren>
+					<treeitem>
+						<treerow>
+							<treecell label="Item 2.1" />
+						</treerow>
+						<treechildren>
+							<treeitem>
+								<treerow>
+									<treecell label="Item 2.1.1" />
+								</treerow>
+							</treeitem>
+							<treeitem>
+								<treerow>
+									<treecell label="Item 2.1.2" />
+								</treerow>
+							</treeitem>
+						</treechildren>
+					</treeitem>
+					<treeitem>
+						<treerow>
+							<treecell label="Item 2.2" />
+							<treecell
+								label="Item 2.2 is something who cares" />
+						</treerow>
+					</treeitem>
+				</treechildren>
+			</treeitem>
+			<treeitem label="Item 3" />
+		</treechildren>
+	</tree>
+</hbox>
+<separator bar="true"/>
+<tree width="200px">
+   <treecols>
+      <treecol label="Subject"/>
+      <treecol label="From"/>
+   </treecols>
+   <treechildren>
+      <treeitem open="false" onOpen="load()">
+         <treerow>
+            <treecell label="Intel Snares XML"/>
+            <treecell label="David Needle"/>
+         </treerow>
+         <treechildren/>
+      </treeitem>
+   </treechildren>
+   <zscript>
+   void load() {
+      Treechildren tc = self.getTreechildren();
+      if (tc.getChildren().isEmpty()) {
+         Treeitem ti = new Treeitem();
+         ti.setLabel("New added");
+         ti.setParent(tc);
+      }
+   }
+   </zscript>
+</tree>
+</window>
+<window use="com.kaiser.zk.MyWindow6" title="Script in Java" width="100%" border="normal">
+</window>
+<window title="tree(live data)" border="normal" width="200px" height="200px" onCreate="self.doOverlapped();self.setSizable(true)" position="left,center">
+	<zscript>					
+	import com.kaiser.zk.BinaryTreeModel;
+	
+	BinaryTreeModel btm = new BinaryTreeModel(new ArrayList(new com.kaiser.zk.BigList(1000)));
+	</zscript>
+	<tree id="tree2" model="&#36;{btm}"/>
+</window>	
+<tablelayout><tablechildren><panel><panelchildren></panelchildren></panel></tablechildren></tablelayout>
+</zk>

@@ -1,0 +1,4 @@
+<row>
+   <textbox value="${arg.col1}"/>
+   <textbox value="${arg.col2}"/>
+</row>
